@@ -69,7 +69,7 @@ body {
 }
 
 .back {
-    background-image: url(./assets/card-back.png);
+    background-image: url(/assets/card-back.png);
 }
 
 .card .front {
@@ -85,14 +85,16 @@ body {
 }
 
 .sprite {
-    background-image: url(./assets/card-front.png);
+    background-image: url(/assets/card-front.png);
 }
 
+/* purgecss start ignore */
 @for $i from 1 through 125 {
     .sprite-stamp#{$i} {
         background-position: 0 #{-100 * ($i - 1)}px;
     }
 }
+/* purgecss end ignore */
 
 .table {
     margin-left: auto;
