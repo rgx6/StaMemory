@@ -1,8 +1,8 @@
 <script>
     import { onMount } from "svelte";
     import { Router, Link, Route } from "svelte-routing";
-    import { isInitialized, isError } from "./lib/store.js";
-    import shared from "./lib/shared.js";
+    import { isInitialized, isError, playerId, playerName, defaultPlayerName, game, difficultyList, seasonList } from "./lib/store.js";
+    import { api } from "./lib/shared.svelte";
 
     import Home from "./routes/home.svelte";
     import Game from "./routes/game.svelte";
@@ -12,7 +12,27 @@
     onMount(async () => {
         // console.debug("onMount @ app");
 
-        await shared.init();
+        if ($isInitialized) return;
+
+        let localPlayerId = localStorage.getItem("playerId");
+
+        if (localPlayerId == null || localPlayerId.trim().length !== 32) {
+            localPlayerId = await api.player.post($defaultPlayerName);
+
+            localStorage.setItem("playerId", localPlayerId);
+
+            $playerId = localPlayerId;
+            $playerName = $defaultPlayerName;
+        } else {
+            $playerId = localPlayerId;
+            $playerName = await api.player.get();
+            $game = await api.game.get();
+        }
+
+        $difficultyList = await api.difficulty.get();
+        $seasonList = await api.season.get();
+
+        $isInitialized = true;
     });
 
     window.onunhandledrejection = function (event) {
@@ -20,7 +40,7 @@
 
         console.error(event);
 
-        isError.set(true);
+        $isError = true;
     };
 
     window.onerror = function (message, url, line, column, error) {
@@ -28,13 +48,13 @@
 
         console.error(message, url, line, column, error);
 
-        isError.set(true);
+        $isError = true;
     };
 </script>
 
 {#if $isError}
-    <div class="has-text-centered">
-        <div class="block mt-6">
+    <div class="center has-text-centered">
+        <div class="block">
             <p>えらー</p>
         </div>
         <div class="block mt-6">
@@ -62,11 +82,9 @@
         </main>
     </Router>
 {:else}
-    <div class="has-text-centered">
-        <div class="block mt-6">
-            <span class="icon">
-                <i class="loader"></i>
-            </span>
-        </div>
+    <div class="center">
+        <span class="icon">
+            <i class="loader"></i>
+        </span>
     </div>
 {/if}

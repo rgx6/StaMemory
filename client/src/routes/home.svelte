@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { Link } from "svelte-routing";
     import { playerName, defaultPlayerName } from "../lib/store.js";
-    import shared from "../lib/shared.js";
+    import { api } from "../lib/shared.svelte";
 
     let isProcessing = false;
     let isNameEdit = false;
@@ -15,11 +15,15 @@
         isProcessing = true;
 
         // @ts-ignore
-        const inputValue = document.querySelector("#nameInput").value;
+        let inputValue = document.querySelector("#nameInput").value;
 
-        await shared.api.player.put(inputValue);
+        if (inputValue == null || inputValue.trim() === "") {
+            inputValue = $defaultPlayerName;
+        }
 
-        playerName.set(inputValue);
+        await api.player.put(inputValue);
+
+        $playerName = inputValue;
 
         isNameEdit = false;
 

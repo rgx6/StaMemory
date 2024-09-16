@@ -1,42 +1,8 @@
-import { get } from "svelte/store";
-import { apiUrlBase, playerId, playerName, difficultyList, seasonList, game, isInitialized, defaultPlayerName } from "./store.js";
+<script context="module">
+    import { get } from "svelte/store";
+    import { apiUrlBase, playerId, game } from "./store.js";
 
-export default {
-    init: async function () {
-        // console.debug("init");
-
-        if (get(isInitialized)) return;
-
-        let localPlayerId = localStorage.getItem("playerId");
-
-        if (localPlayerId == null || localPlayerId.trim().length !== 32) {
-            localPlayerId = await this.api.player.post(get(defaultPlayerName));
-
-            localStorage.setItem("playerId", localPlayerId);
-
-            playerId.set(localPlayerId);
-            playerName.set(get(defaultPlayerName));
-        } else {
-            playerId.set(localPlayerId);
-
-            const _playerName = await this.api.player.get();
-
-            playerName.set(_playerName);
-
-            const _game = await this.api.game.get();
-
-            game.set(_game);
-        }
-
-        const _difficultyList = await this.api.difficulty.get();
-        difficultyList.set(_difficultyList);
-
-        const _seasonList = await this.api.season.get();
-        seasonList.set(_seasonList);
-
-        isInitialized.set(true);
-    },
-    api: {
+    export const api = {
         difficulty: {
             get: async function () {
                 const apiUrl = get(apiUrlBase) + "/api/difficulty";
@@ -223,5 +189,5 @@ export default {
                 return json.seasonList;
             },
         },
-    },
-};
+    };
+</script>

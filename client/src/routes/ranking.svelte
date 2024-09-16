@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { seasonList } from "../lib/store.js";
-    import shared from "../lib/shared.js";
+    import { api } from "../lib/shared.svelte";
 
     let isProcessing = false;
     let rankingList = [];
@@ -12,7 +12,7 @@
         // @ts-ignore
         let selectedSeasonId = document.querySelector("#rankingSeason").value;
 
-        rankingList = await shared.api.ranking.get(selectedSeasonId);
+        rankingList = await api.ranking.get(selectedSeasonId);
     });
 
     async function changeSeason() {
@@ -21,7 +21,7 @@
         // @ts-ignore
         let selectedSeasonId = document.querySelector("#rankingSeason").value;
 
-        rankingList = await shared.api.ranking.get(selectedSeasonId);
+        rankingList = await api.ranking.get(selectedSeasonId);
 
         isProcessing = false;
     }

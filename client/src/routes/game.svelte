@@ -1,9 +1,8 @@
 <script>
     import { onDestroy, onMount } from "svelte";
     import { navigate } from "svelte-routing";
-    import { get } from "svelte/store";
     import { playerId, difficultyList, game, firstCard, secondCard } from "../lib/store.js";
-    import shared from "../lib/shared.js";
+    import { api } from "../lib/shared.svelte";
 
     let isCleared = false;
     let isProcessing = false;
@@ -11,22 +10,22 @@
     onMount(async () => {
         // console.debug("onMount @ game");
 
-        if (get(playerId) == null || get(playerId).trim() == "") {
+        if ($playerId == null || $playerId.trim() === "") {
             navigate("/", { replace: true });
             return;
         }
 
-        if (get(game) != null && get(game).firstCardIndex != null) {
+        if ($game != null && $game.firstCardIndex != null) {
             const card = {
-                cardIndex: get(game).firstCardIndex,
-                cardId: get(game).firstCardId,
+                cardIndex: $game.firstCardIndex,
+                cardId: $game.firstCardId,
             };
 
-            firstCard.set(card);
+            $firstCard = card;
 
-            const button = document.querySelector("#card" + get(game).firstCardIndex);
+            const button = document.querySelector("#card" + $game.firstCardIndex);
 
-            setFlippedCardClass(button, get(game).firstCardId);
+            setFlippedCardClass(button, $game.firstCardId);
 
             return;
         }
@@ -36,18 +35,17 @@
         // console.debug("onDestroy @ game");
 
         if (isCleared) {
-            firstCard.set(null);
-            secondCard.set(null);
-            game.set(null);
+            $firstCard = null;
+            $secondCard = null;
+            $game = null;
         }
     });
 
     async function createGame(difficultyId) {
         isProcessing = true;
 
-        await shared.api.game.create(difficultyId);
-        const _game = await shared.api.game.get();
-        game.set(_game);
+        await api.game.create(difficultyId);
+        $game = await api.game.get();
 
         isCleared = false;
 
@@ -57,46 +55,46 @@
     async function deleteGame() {
         isProcessing = true;
 
-        await shared.api.game.delete();
+        await api.game.delete();
 
-        game.set(null);
+        $game = null;
 
         isProcessing = false;
     }
 
     function retryGame() {
-        game.set(null);
+        $game = null;
     }
 
     async function flipCard(event, index) {
         isProcessing = true;
 
-        if (get(game).cards[index].isOpen) {
+        if ($game.cards[index].isOpen) {
             isProcessing = false;
             return;
         }
 
-        if (get(game).firstCardIndex == index) {
+        if ($game.firstCardIndex == index) {
             isProcessing = false;
             return;
         }
 
         const button = event.currentTarget;
 
-        const updatedGame = await shared.api.game.update(index);
+        const updatedGame = await api.game.update(index);
 
-        get(game).token = updatedGame.token;
+        $game.token = updatedGame.token;
 
-        if (get(game).firstCardIndex == null) {
+        if ($game.firstCardIndex == null) {
             const card = {
                 cardIndex: updatedGame.flippedCardIndex,
                 cardId: updatedGame.flippedCardId,
             };
 
-            firstCard.set(card);
+            $firstCard = card;
 
-            get(game).firstCardIndex = updatedGame.flippedCardIndex;
-            get(game).firstCardId = updatedGame.flippedCardId;
+            $game.firstCardIndex = updatedGame.flippedCardIndex;
+            $game.firstCardId = updatedGame.flippedCardId;
 
             setFlippedCardClass(button, updatedGame.flippedCardId);
 
@@ -110,34 +108,34 @@
             cardId: updatedGame.flippedCardId,
         };
 
-        secondCard.set(card);
+        $secondCard = card;
 
         setFlippedCardClass(button, updatedGame.flippedCardId);
 
         // アニメーション完了待ち
         setTimeout(() => {
             if (updatedGame.isCleared) {
-                firstCard.set(null);
-                secondCard.set(null);
+                $firstCard = null;
+                $secondCard = null;
 
                 isCleared = true;
                 isProcessing = false;
 
                 return;
             } else if (updatedGame.isMatched) {
-                get(game).cards[$firstCard.cardIndex].cardId = $firstCard.cardId;
-                get(game).cards[$firstCard.cardIndex].isOpen = true;
-                get(game).cards[$secondCard.cardIndex].cardId = $secondCard.cardId;
-                get(game).cards[$secondCard.cardIndex].isOpen = true;
+                $game.cards[$firstCard.cardIndex].cardId = $firstCard.cardId;
+                $game.cards[$firstCard.cardIndex].isOpen = true;
+                $game.cards[$secondCard.cardIndex].cardId = $secondCard.cardId;
+                $game.cards[$secondCard.cardIndex].isOpen = true;
 
-                get(game).firstCardIndex = null;
-                get(game).firstCardId = null;
+                $game.firstCardIndex = null;
+                $game.firstCardId = null;
 
-                firstCard.set(null);
-                secondCard.set(null);
+                $firstCard = null;
+                $secondCard = null;
 
-                get(game).turn = get(game).turn + 1;
-                game.set(get(game));
+                $game.turn = $game.turn + 1;
+                $game = $game;
 
                 isProcessing = false;
 
@@ -148,14 +146,14 @@
                 resetFlippedCardClass($firstCard.cardIndex, $firstCard.cardId);
                 resetFlippedCardClass($secondCard.cardIndex, $secondCard.cardId);
 
-                get(game).firstCardIndex = null;
-                get(game).firstCardId = null;
+                $game.firstCardIndex = null;
+                $game.firstCardId = null;
 
-                firstCard.set(null);
-                secondCard.set(null);
+                $firstCard = null;
+                $secondCard = null;
 
-                get(game).turn = get(game).turn + 1;
-                game.set(get(game));
+                $game.turn = $game.turn + 1;
+                $game = $game;
 
                 isProcessing = false;
             }, 500);
