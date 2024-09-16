@@ -69,7 +69,7 @@ body {
 }
 
 .back {
-    background-image: url(./assets/back.svg);
+    background-image: url(./assets/back.png);
 }
 
 .card .front {
@@ -85,7 +85,7 @@ body {
 }
 
 .sprite {
-    background-image: url(./assets/stampspritesheet.png);
+    background-image: url(./assets/card.png);
 }
 
 @for $i from 1 through 125 {
