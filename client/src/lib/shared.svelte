@@ -64,7 +64,7 @@
                     },
                 });
 
-                if (response.status === 404) {
+                if (response.status === 204) {
                     return null;
                 } else if (!response.ok) {
                     throw new Error(`response status: ${response.status}`);

@@ -38,7 +38,7 @@ public class GameController : ControllerBase
 
         if (playingGame is null)
         {
-            return NotFound();
+            return NoContent();
         }
 
         var response = new GetPlayingGame.Response
@@ -90,7 +90,7 @@ public class GameController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> RenamePlayerAsync(RequestHeader requestHeader, FlipCard.Request request)
+    public async Task<IActionResult> FlipCardAsync(RequestHeader requestHeader, FlipCard.Request request)
     {
         var player = await _playerService.GetPlayerAsync(requestHeader.PlayerId);
 
