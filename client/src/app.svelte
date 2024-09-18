@@ -69,7 +69,7 @@
             <div class="navbar-menu">
                 <div class="navbar-start">
                     <Link class="navbar-item" to="/">たいとる</Link>
-                    <Link class="navbar-item" to="/game">げーむ</Link>
+                    <Link class="navbar-item" to="/game">あそぶ</Link>
                     <Link class="navbar-item" to="/ranking">らんきんぐ</Link>
                 </div>
             </div>

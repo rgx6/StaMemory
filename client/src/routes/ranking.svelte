@@ -5,6 +5,7 @@
 
     let isProcessing = false;
     let rankingList = [];
+    let selectedTab = 0;
 
     onMount(async () => {
         // console.debug("onMount @ ranking");
@@ -36,27 +37,45 @@
         </select>
     </div>
 
-    {#each rankingList as ranking}
-        <div class="block mt-6">
-            <p>{ranking.difficultyName}</p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>なまえ</th>
-                        <th>たーん</th>
-                        <th>にちじ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {#each ranking.scoreList as score}
+    <div class="tabs is-centered is-boxed mt-6">
+        <ul>
+            {#each rankingList as ranking, i}
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                <li on:click="{() => (selectedTab = i)}" class:is-active="{selectedTab == i}">
+                    <!-- svelte-ignore a11y-missing-attribute -->
+                    <a>{ranking.difficultyName}</a>
+                </li>
+            {/each}
+        </ul>
+    </div>
+
+    {#each rankingList as ranking, i}
+        {#if selectedTab == i}
+            <div class="block mt-6">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td class="has-text-left">{score.playerName}</td>
-                            <td class="has-text-right">{score.turn}</td>
-                            <td class="has-text-left">{score.dateTime}</td>
+                            <th></th>
+                            <th></th>
+                            <th>たーん</th>
+                            <th>たいむ</th>
+                            <th></th>
                         </tr>
-                    {/each}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {#each ranking.scoreList as score, i}
+                            <tr>
+                                <td class="has-text-right">{i + 1}</td>
+                                <td class="has-text-left">{score.playerName}</td>
+                                <td class="has-text-right">{score.turn}</td>
+                                <td class="has-text-right">{score.clearTime}</td>
+                                <td class="has-text-left">{score.clearedAt}</td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
+            </div>
+        {/if}
     {/each}
 </div>

@@ -29,7 +29,9 @@ public class GetRanking
 
             public int Turn { get; set; }
 
-            public string DateTime { get; set; } = null!;
+            public int ClearTime { get; set; }
+
+            public string ClearedAt { get; set; } = null!;
         }
     }
 }

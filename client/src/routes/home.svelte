@@ -39,7 +39,7 @@
     </div>
     <div class="column is-three-fifths is-offset-one-fifth">
         <div class="block mt-6">
-            <Link class="button is-info is-fullwidth" to="/game">げーむ</Link>
+            <Link class="button is-info is-fullwidth" to="/game">あそぶ</Link>
         </div>
         <div class="block mt-6">
             <Link class="button is-info is-fullwidth" to="/ranking">らんきんぐ</Link>

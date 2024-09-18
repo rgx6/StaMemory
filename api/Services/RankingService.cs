@@ -25,29 +25,27 @@ public class RankingService : IRankingService
 
         var groups = gameList.GroupBy(x => x.DifficultyId);
 
-        var result = new GetRanking.Response
-        {
-            RankingList = new List<GetRanking.Response.Ranking>(),
-        };
+        var result = new GetRanking.Response();
 
-        foreach (var group in groups)
-        {
-            result.RankingList.Add(new GetRanking.Response.Ranking
+        result.RankingList = groups
+            .OrderBy(group => group.Key)
+            .Select(group => new GetRanking.Response.Ranking
             {
                 DifficultyName = group.First().DifficultyName,
                 ScoreList = group
-                .OrderBy(x => x.Turn)
-                    .ThenBy(x => x.CompletedAt)
-                .Take(3)
-                .Select(x => new GetRanking.Response.Score
-                {
-                    PlayerName = playerList.Single(y => y.PlayerId == x.PlayerId).PlayerName,
-                    Turn = x.Turn,
-                    DateTime = x.CreatedAt.AddHours(9).ToString("yyyy/MM/dd HH:mm"),
-                })
-                .ToList(),
-            });
-        }
+                        .OrderBy(x => x.Turn)
+                            .ThenBy(x => x.CompletedAt - x.CreatedAt)
+                            .ThenBy(x => x.CompletedAt)
+                        .Take(20)
+                        .Select(x => new GetRanking.Response.Score
+                        {
+                            PlayerName = playerList.Single(y => y.PlayerId == x.PlayerId).PlayerName,
+                            Turn = x.Turn,
+                            ClearTime = (int)Math.Ceiling((x.CompletedAt!.Value - x.CreatedAt).TotalSeconds),
+                            ClearedAt = x.CreatedAt.AddHours(9).ToString("yyyy/MM/dd HH:mm"),
+                        })
+                        .ToList(),
+            }).ToList();
 
         return result;
     }
