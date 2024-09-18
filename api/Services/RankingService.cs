@@ -41,7 +41,7 @@ public class RankingService : IRankingService
                         {
                             PlayerName = playerList.Single(y => y.PlayerId == x.PlayerId).PlayerName,
                             Turn = x.Turn,
-                            ClearTime = (int)Math.Ceiling((x.CompletedAt!.Value - x.CreatedAt).TotalSeconds),
+                            ClearTime = Utils.GetClearTime(x.CreatedAt, x.CompletedAt!.Value),
                             ClearedAt = x.CreatedAt.AddHours(9).ToString("yyyy/MM/dd HH:mm"),
                         })
                         .ToList(),

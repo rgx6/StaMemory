@@ -11,4 +11,6 @@ public class FlipCardResult
     public bool IsMatched { get; set; }
 
     public bool IsCleared { get; set; }
+
+    public int? ClearTime { get; set; }
 }

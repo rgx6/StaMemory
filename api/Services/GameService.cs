@@ -98,6 +98,7 @@ public class GameService : IGameService
                 FlippedCardId = card.CardId,
                 IsMatched = false,
                 IsCleared = false,
+                ClearTime = null,
             });
         }
 
@@ -126,6 +127,7 @@ public class GameService : IGameService
                 FlippedCardId = card.CardId,
                 IsMatched = false,
                 IsCleared = false,
+                ClearTime = null,
             });
         }
 
@@ -148,6 +150,7 @@ public class GameService : IGameService
                 FlippedCardId = card.CardId,
                 IsMatched = true,
                 IsCleared = false,
+                ClearTime = null,
             });
         }
 
@@ -164,6 +167,7 @@ public class GameService : IGameService
             FlippedCardId = card.CardId,
             IsMatched = true,
             IsCleared = true,
+            ClearTime = Utils.GetClearTime(game.CreatedAt, game.CompletedAt.Value),
         });
     }
 

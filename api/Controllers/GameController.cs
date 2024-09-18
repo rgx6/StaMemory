@@ -125,6 +125,7 @@ public class GameController : ControllerBase
             FlippedCardId = result.FlippedCardId,
             IsMatched = result.IsMatched,
             IsCleared = result.IsCleared,
+            ClearTime = result.ClearTime,
         };
 
         return Ok(response);

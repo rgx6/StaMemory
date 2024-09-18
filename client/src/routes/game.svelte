@@ -6,6 +6,7 @@
 
     let isCleared = false;
     let isProcessing = false;
+    let clearTime = 0;
 
     onMount(async () => {
         // console.debug("onMount @ game");
@@ -118,6 +119,8 @@
                 $firstCard = null;
                 $secondCard = null;
 
+                clearTime = updatedGame.clearTime;
+
                 isCleared = true;
                 isProcessing = false;
 
@@ -221,7 +224,8 @@
         <div class="block mt-6">
             {#if isCleared}
                 <div class="mt-6">
-                    <p>くりあ</p>
+                    <p>くりあたいむ</p>
+                    <p>{clearTime}</p>
                 </div>
                 <div class="mt-6">
                     <button class="button is-info" on:click="{retryGame}">もういちど</button>

@@ -6,4 +6,9 @@ public static class Utils
     {
         return Guid.NewGuid().ToString("N");
     }
+
+    public static int GetClearTime(DateTime from, DateTime to)
+    {
+        return (int)Math.Ceiling((to - from).TotalSeconds);
+    }
 }
