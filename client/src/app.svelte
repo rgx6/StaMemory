@@ -72,6 +72,11 @@
                     <Link class="navbar-item" to="/game">あそぶ</Link>
                     <Link class="navbar-item" to="/ranking">らんきんぐ</Link>
                 </div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="navbar-item">{$playerName}</div>
+                    </div>
+                </div>
             </div>
         </nav>
         <main class="block mt-6 mb-6">
