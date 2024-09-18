@@ -10,14 +10,20 @@
     onMount(async () => {
         // console.debug("onMount @ ranking");
 
+        isProcessing = true;
+
         // @ts-ignore
         let selectedSeasonId = document.querySelector("#rankingSeason").value;
 
         rankingList = await api.ranking.get(selectedSeasonId);
+
+        isProcessing = false;
     });
 
     async function changeSeason() {
         isProcessing = true;
+
+        rankingList = [];
 
         // @ts-ignore
         let selectedSeasonId = document.querySelector("#rankingSeason").value;
@@ -49,6 +55,14 @@
             {/each}
         </ul>
     </div>
+
+    {#if isProcessing}
+        <div class="is-centered mt-6">
+            <span class="icon">
+                <i class="loader"></i>
+            </span>
+        </div>
+    {/if}
 
     {#each rankingList as ranking, i}
         {#if selectedTab == i}
