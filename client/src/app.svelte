@@ -66,9 +66,11 @@
 {:else if $isInitialized}
     <Router>
         <nav class="navbar" aria-label="main navigation">
+            <div class="navbar-brand">
+                <Link class="navbar-item" to="/">しんけいすいじゃく</Link>
+            </div>
             <div class="navbar-menu">
                 <div class="navbar-start">
-                    <Link class="navbar-item" to="/">たいとる</Link>
                     <Link class="navbar-item" to="/game">あそぶ</Link>
                     <Link class="navbar-item" to="/ranking">らんきんぐ</Link>
                 </div>
