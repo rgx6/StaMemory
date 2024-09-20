@@ -51,7 +51,7 @@
             <div class="block mt-6">
                 <div class="field is-grouped">
                     <div class="control is-expanded">
-                        <input class="input" disabled="{isProcessing}" id="nameInput" type="text" placeholder="{$defaultPlayerName}" value="{$playerName}" maxlength="32" />
+                        <input class="input" disabled="{isProcessing}" id="nameInput" type="text" placeholder="{$defaultPlayerName}" value="{$playerName}" maxlength="16" />
                     </div>
                     <div class="control">
                         <button class="button is-info" disabled="{isProcessing}" on:click="{async () => await updatePlayer()}">へんこう</button>
