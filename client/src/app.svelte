@@ -13,6 +13,12 @@
     onMount(async () => {
         // console.debug("onMount @ app");
 
+        if (location.pathname.startsWith("/reset")) {
+            $isInitialized = true;
+            $playerName = "";
+
+            return;
+        }
         if ($isInitialized) return;
 
         let localPlayerId = localStorage.getItem("playerId");
