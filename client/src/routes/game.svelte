@@ -202,9 +202,6 @@
         {/if}
     {:else}
         <div class="block mt-6">
-            <p class="label">たーん {$game.turn}</p>
-        </div>
-        <div class="block mt-6">
             {#each $game.cards as card, i}
                 {#if card.isOpen}
                     <button id="{'card' + i}" class="card is-shadowless" disabled>
@@ -220,6 +217,9 @@
                     <br />
                 {/if}
             {/each}
+        </div>
+        <div class="block mt-6">
+            <p>たーん {$game.turn}</p>
         </div>
         <div class="block mt-6">
             {#if isCleared}
