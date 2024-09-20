@@ -7,6 +7,7 @@
     import Home from "./routes/home.svelte";
     import Game from "./routes/game.svelte";
     import Ranking from "./routes/ranking.svelte";
+    import Reset from "./routes/reset.svelte";
     import NotFound from "./routes/notfound.svelte";
 
     onMount(async () => {
@@ -85,6 +86,7 @@
             <Route path="/" component="{Home}" />
             <Route path="/game" component="{Game}" />
             <Route path="/ranking" component="{Ranking}" />
+            <Route path="/reset" component="{Reset}" />
             <Route component="{NotFound}" />
         </main>
     </Router>
